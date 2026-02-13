@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Événements - Ngozistes du Royaume</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <style>
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 150px 0 80px;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .events-section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            color: var(--dark-color);
+            margin-bottom: 50px;
+            font-size: 2.5rem;
+        }
+
+        .events-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .tab-btn {
+            padding: 12px 30px;
+            border: none;
+            background: var(--light-color);
+            color: var(--dark-color);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .tab-btn:hover,
+        .tab-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .event-card {
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .event-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .event-image {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .event-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .event-card:hover .event-image img {
+            transform: scale(1.1);
+        }
+
+        .event-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--primary-color);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .event-badge.past {
+            background: var(--text-color);
+        }
+
+        .event-content {
+            padding: 25px;
+        }
+
+        .event-date {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .event-date i {
+            font-size: 1.1rem;
+        }
+
+        .event-title {
+            color: var(--dark-color);
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+
+        .event-description {
+            color: var(--text-color);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .event-details {
+            background: var(--light-color);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+        }
+
+        .event-detail-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .event-detail-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .event-detail-item i {
+            width: 20px;
+            color: var(--primary-color);
+        }
+
+        .event-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .event-participants {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--text-color);
+        }
+
+        .event-participants i {
+            color: var(--primary-color);
+        }
+
+        .btn-event {
+            padding: 8px 20px;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .btn-event:hover {
+            background: #45a049;
+        }
+
+        .btn-event.secondary {
+            background: var(--secondary-color);
+        }
+
+        .btn-event.secondary:hover {
+            background: #1976D2;
+        }
+
+        .event-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .event-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            max-width: 800px;
+            width: 90%;
+            border-radius: var(--border-radius);
+            padding: 40px;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 30px;
+            cursor: pointer;
+            color: var(--text-color);
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            color: var(--danger-color);
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            color: var(--dark-color);
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .modal-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: var(--light-color);
+            border-radius: var(--border-radius);
+        }
+
+        .modal-info-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-info-item i {
+            width: 25px;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        .modal-description {
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+
+        .modal-description h3 {
+            color: var(--dark-color);
+            margin-bottom: 15px;
+        }
+
+        .registration-form {
+            background: var(--light-color);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            margin-top: 30px;
+        }
+
+        .registration-form h3 {
+            color: var(--dark-color);
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+        }
+
+        .btn-register {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .btn-register:hover {
+            background: #45a049;
+        }
+
+        .calendar-section {
+            margin-top: 60px;
+            padding: 40px;
+            background: var(--light-color);
+            border-radius: var(--border-radius);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .calendar-month {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--dark-color);
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .calendar-nav button {
+            padding: 8px 15px;
+            border: none;
+            background: white;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .calendar-nav button:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            padding: 10px;
+            font-weight: bold;
+            color: var(--dark-color);
+        }
+
+        .calendar-day {
+            min-height: 80px;
+            padding: 10px;
+            background: white;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .calendar-day:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .calendar-day.has-event {
+            background: #e8f5e9;
+            font-weight: bold;
+        }
+
+        .calendar-day.has-event:hover {
+            background: var(--primary-color);
+        }
+
+        .event-dot {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            margin: 2px;
+        }
+
+        @media screen and (max-width: 768px) {
+            .events-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .calendar-grid {
+                font-size: 0.8rem;
+            }
+            
+            .calendar-day {
+                min-height: 50px;
+                padding: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="logo">
+                <img src="images/logo/logo.png" alt="Logo Ngozistes du Royaume">
+                <span><span class="logo-ngozistes">Ngozistes</span> <span class="logo-royaume">du Royaume</span></span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="apropos.html">À propos</a></li>
+                <li><a href="activites.html">Activités</a></li>
+                <li><a href="evenements.html" class="active">Événements</a></li>
+                <li><a href="adhesion.html" class="btn-adhesion">Adhérer</a></li>
+                <li><a href="login.html" class="btn-login"><i class="fas fa-user"></i> Connexion</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Nos événements</h1>
+            <p>Découvrez tous les événements des Ngozistes du Royaume</p>
+        </div>
+    </section>
+
+    <!-- Onglets événements -->
+    <section class="events-section">
+        <div class="container">
+            <div class="events-tabs">
+                <button class="tab-btn active" onclick="showEvents('upcoming')">À venir</button>
+                <button class="tab-btn" onclick="showEvents('past')">Passés</button>
+                <button class="tab-btn" onclick="showEvents('all')">Tous</button>
+            </div>
+
+            <!-- Événements à venir -->
+            <div id="upcoming-events" class="events-grid" style="display: grid;">
+                <!-- Les événements à venir seront chargés dynamiquement -->
+            </div>
+
+            <!-- Événements passés -->
+            <div id="past-events" class="events-grid" style="display: none;">
+                <!-- Les événements passés seront chargés dynamiquement -->
+            </div>
+
+            <!-- Calendrier des événements -->
+            <div class="calendar-section">
+                <h2 class="section-title">Calendrier des événements</h2>
+                <div class="calendar-header">
+                    <span class="calendar-month" id="current-month">Mai 2024</span>
+                    <div class="calendar-nav">
+                        <button onclick="changeMonth(-1)"><i class="fas fa-chevron-left"></i></button>
+                        <button onclick="changeMonth(1)"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+                <div class="calendar-grid" id="calendar-grid">
+                    <!-- Le calendrier sera généré dynamiquement -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal événement -->
+    <div id="eventModal" class="event-modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeEventModal()">&times;</span>
+            <img src="" alt="Événement" class="modal-image" id="modalImage">
+            <h2 class="modal-title" id="modalTitle"></h2>
+            
+            <div class="modal-info" id="modalInfo">
+                <!-- Les infos du modal seront chargées dynamiquement -->
+            </div>
+
+            <div class="modal-description" id="modalDescription">
+                <!-- La description du modal sera chargée dynamiquement -->
+            </div>
+
+            <!-- Formulaire d'inscription (visible si connecté) -->
+            <div class="registration-form" id="registrationForm">
+                <h3>Inscription à l'événement</h3>
+                <form id="event-registration-form">
+                    <div class="form-group">
+                        <label for="name">Nom complet</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="guests">Nombre d'accompagnants</label>
+                        <select id="guests">
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message (optionnel)</label>
+                        <textarea id="message" rows="3" placeholder="Un message pour les organisateurs..."></textarea>
+                    </div>
+                    <button type="submit" class="btn-register">Confirmer ma présence</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-info">
+                    <h3><span class="footer-ngozistes">Ngozistes</span> <span class="footer-royaume">du Royaume</span></h3>
+                    <p>Ensemble, construisons un avenir meilleur</p>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact</h4>
+                    <p><i class="fas fa-envelope"></i> contact@ngozistesduroyaume.org</p>
+                    <p><i class="fas fa-phone"></i> 01 23 45 67 89</p>
+                </div>
+                <div class="footer-social">
+                    <h4>Suivez-nous</h4>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Ngozistes du Royaume. Tous droits réservés.</p>
+                <a href="#">Mentions légales</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

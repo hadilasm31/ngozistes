@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activités - Ngozistes du Royaume</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <style>
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 150px 0 80px;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .activities-section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            color: var(--dark-color);
+            margin-bottom: 50px;
+            font-size: 2.5rem;
+        }
+
+        .activity-filters {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 25px;
+            border: none;
+            background: var(--light-color);
+            color: var(--dark-color);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .activities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .activity-card {
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .activity-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .activity-image {
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .activity-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .activity-card:hover .activity-image img {
+            transform: scale(1.1);
+        }
+
+        .activity-category {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--primary-color);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .activity-content {
+            padding: 25px;
+        }
+
+        .activity-date {
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .activity-title {
+            color: var(--dark-color);
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+
+        .activity-description {
+            color: var(--text-color);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .activity-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .activity-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+
+        .activity-meta-item i {
+            color: var(--primary-color);
+        }
+
+        .activity-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .participants {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+
+        .btn-activity {
+            padding: 8px 20px;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .btn-activity:hover {
+            background: #45a049;
+        }
+
+        .activity-reports {
+            margin-top: 60px;
+        }
+
+        .report-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 30px;
+        }
+
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .report-title {
+            color: var(--dark-color);
+            font-size: 1.5rem;
+        }
+
+        .report-date {
+            color: var(--text-color);
+        }
+
+        .report-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .report-text p {
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        .report-gallery {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .report-gallery img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .report-gallery img:hover {
+            transform: scale(1.05);
+        }
+
+        .download-report {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--secondary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+            transition: var(--transition);
+        }
+
+        .download-report:hover {
+            background: #1976D2;
+        }
+
+        @media screen and (max-width: 768px) {
+            .activities-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .report-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="logo">
+                <img src="images/logo/logo.png" alt="Logo Ngozistes du Royaume">
+                <span><span class="logo-ngozistes">Ngozistes</span> <span class="logo-royaume">du Royaume</span></span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="apropos.html">À propos</a></li>
+                <li><a href="activites.html" class="active">Activités</a></li>
+                <li><a href="evenements.html">Événements</a></li>
+                <li><a href="adhesion.html" class="btn-adhesion">Adhérer</a></li>
+                <li><a href="login.html" class="btn-login"><i class="fas fa-user"></i> Connexion</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Nos activités</h1>
+            <p>Découvrez toutes les actions des Ngozistes du Royaume et leurs comptes-rendus</p>
+        </div>
+    </section>
+
+    <!-- Filtres des activités -->
+    <section class="activities-section">
+        <div class="container">
+            <div class="activity-filters">
+                <button class="filter-btn active" data-filter="all">Toutes les activités</button>
+                <button class="filter-btn" data-filter="environnement">Environnement</button>
+                <button class="filter-btn" data-filter="social">Social</button>
+                <button class="filter-btn" data-filter="culture">Culture</button>
+                <button class="filter-btn" data-filter="education">Éducation</button>
+            </div>
+
+            <!-- Grille des activités -->
+            <div class="activities-grid" id="activities-container">
+                <!-- Les activités seront chargées dynamiquement -->
+            </div>
+
+            <!-- Comptes rendus détaillés -->
+            <h2 class="section-title">Comptes rendus détaillés</h2>
+            
+            <div class="activity-reports" id="reports-container">
+                <!-- Les comptes rendus seront chargés dynamiquement -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div class="lightbox">
+        <span class="close-lightbox">&times;</span>
+        <img class="lightbox-content" src="">
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-info">
+                    <h3><span class="footer-ngozistes">Ngozistes</span> <span class="footer-royaume">du Royaume</span></h3>
+                    <p>Ensemble, construisons un avenir meilleur</p>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact</h4>
+                    <p><i class="fas fa-envelope"></i> contact@ngozistesduroyaume.org</p>
+                    <p><i class="fas fa-phone"></i> 01 23 45 67 89</p>
+                </div>
+                <div class="footer-social">
+                    <h4>Suivez-nous</h4>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Ngozistes du Royaume. Tous droits réservés.</p>
+                <a href="#">Mentions légales</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

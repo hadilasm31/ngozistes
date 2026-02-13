@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espace Membre - Ngozistes du Royaume</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../images/logo/logo.png" alt="Logo Ngozistes du Royaume">
+                <h3><span class="logo-ngozistes">Ngozistes</span> <span class="logo-royaume">du Royaume</span></h3>
+            </div>
+            
+            <div class="user-info">
+                <img src="../images/default-avatar.png" alt="Avatar" class="user-avatar">
+                <h4 id="user-name">Chargement...</h4>
+                <p id="user-role">Adhérent</p>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active"><a href="#" onclick="showPanel('dashboard'); return false;"><i class="fas fa-tachometer-alt"></i> Tableau de bord</a></li>
+                    <li><a href="#" onclick="showPanel('events'); return false;"><i class="fas fa-calendar-alt"></i> Mes événements</a></li>
+                    <li><a href="#" onclick="showPanel('messages'); return false;"><i class="fas fa-envelope"></i> Messagerie</a></li>
+                    <li><a href="#" onclick="showPanel('profile'); return false;"><i class="fas fa-user"></i> Mon profil</a></li>
+                    <li><a href="#" onclick="showPanel('announcements'); return false;"><i class="fas fa-bullhorn"></i> Annonces</a></li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <a href="../login.html" class="logout"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="content-header">
+                <h1>Tableau de bord</h1>
+                <div class="header-actions">
+                    <span class="notification-badge">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge" id="notification-count">0</span>
+                    </span>
+                </div>
+            </header>
+
+            <!-- Stats Cards -->
+            <div class="stats-cards" id="stats-cards">
+                <!-- Les statistiques seront chargées dynamiquement -->
+            </div>
+
+            <!-- Announcements Section -->
+            <section class="dashboard-section">
+                <h2>Dernières annonces</h2>
+                <div class="announcements-list" id="member-announcements">
+                    <!-- Les annonces seront chargées dynamiquement -->
+                </div>
+            </section>
+
+            <!-- Upcoming Events -->
+            <section class="dashboard-section">
+                <h2>Mes prochains événements</h2>
+                <div class="events-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Événement</th>
+                                <th>Date</th>
+                                <th>Lieu</th>
+                                <th>Statut</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="member-events">
+                            <!-- Les événements seront chargés dynamiquement -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Messages Section -->
+            <section class="dashboard-section">
+                <h2>Messages récents</h2>
+                <div class="messages-list" id="member-messages">
+                    <!-- Les messages seront chargés dynamiquement -->
+                </div>
+                <a href="#" class="view-all" onclick="showPanel('messages'); return false;">Voir tous les messages →</a>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        function showPanel(panelName) {
+            console.log('Changement de panneau vers:', panelName);
+        }
+
+        function updatePresence(button, status) {
+            console.log('Mise à jour de présence:', status);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Chargement des données membre depuis Supabase à implémenter');
+        });
+    </script>
+</body>
+</html>
